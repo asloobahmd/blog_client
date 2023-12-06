@@ -1,0 +1,152 @@
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useLocation, useNavigate } from "react-router-dom";
+import EditModal from "../components/EditModel";
+import Menu from "../components/Menu";
+import { AuthContext } from "../context/authContext";
+import toast, { Toaster } from "react-hot-toast";
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
+
+type PostType = {
+  cat: string;
+  createdAt: string;
+  desc: string;
+  img: string;
+  title: string;
+  uid: {
+    _id: string;
+    username: string;
+    email: string;
+  };
+  updatedAt: string;
+  __v: number;
+  _id: string;
+};
+
+const Single = () => {
+  const [showmodel, setshowmodel] = useState<boolean>(false);
+
+  const postId = useLocation().pathname.split("/")[1];
+
+  const navigate = useNavigate();
+
+  const { currentUser } = useContext(AuthContext);
+
+  const queryClient = useQueryClient();
+
+  const {
+    data: post,
+    isLoading,
+    refetch,
+  } = useQuery<PostType>({
+    queryKey: ["singlepost"],
+    queryFn: async () => {
+      const { data } = await axios.get(
+        `https://blogts-node-api.onrender.com/posts/${postId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      return data;
+    },
+  });
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ["singlepost"] });
+    queryClient.invalidateQueries({ queryKey: ["posts"] });
+  });
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ["posts"] });
+    refetch();
+  }, [postId]);
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      return await axios.delete(
+        `https://blogts-node-api.onrender.com/posts/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      toast.success("Successfully Deleted!");
+    },
+  });
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteMutation.mutateAsync(id);
+
+      // delay becase toast message showing
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (isLoading) {
+    return <h1 className="container  p-4 flex mx-auto">Loading</h1>;
+  }
+
+  const getText = (html: string) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent;
+  };
+
+  return (
+    <div className="container p-4 flex mx-auto">
+      <Toaster />
+      <div className="w-full md:px-8 flex flex-col gap-6 md:gap-8 lg:w-4/6">
+        <div className="flex">
+          <img
+            src={post?.img}
+            className="w-[800px] h-[500px] object-cover"
+            alt=""
+          />
+        </div>
+
+        <div className="">
+          <h1 className="text-2xl font-bold mb-6 md:text-4xl md:mb-8">
+            {post?.title}
+          </h1>
+          <div className="text-justify">{getText(post?.desc as string)}</div>
+        </div>
+        <div className=" flex justify-between items-center">
+          <div className=" flex flex-col">
+            <span className="font-medium">Author: {post?.uid.username}</span>
+            <span className="font-medium">Catagory: {post?.cat}</span>
+          </div>
+          {currentUser?.username === post?.uid.username ? (
+            <div className="flex flex-row-reverse gap-2 items-center">
+              <button
+                className="w-fit text-3xl text-red-400  rounded-sm"
+                onClick={() => handleDelete(post?._id as string)}
+              >
+                <MdDelete />
+              </button>
+              <button
+                className=" w-fit text-2xl text-green-700  rounded-sm"
+                onClick={() => setshowmodel(true)}
+              >
+                <FaEdit />
+              </button>
+            </div>
+          ) : null}
+        </div>
+        {showmodel && (
+          <EditModal setshowmodel={setshowmodel} postId={post?._id as string} />
+        )}
+      </div>
+      {post?.cat && <Menu cat={post?.cat} postId={post?._id} />}
+    </div>
+  );
+};
+
+export default Single;
