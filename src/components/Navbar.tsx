@@ -4,6 +4,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { AuthContext, AuthContextProps } from "../context/authContext";
 import Navmodel from "./Navmodel";
 import toast, { Toaster } from "react-hot-toast";
+import { FiMenu } from "react-icons/fi";
 
 type NavbarProps = {};
 
@@ -82,7 +83,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
         </ul>
       </div>
       <button className="text-[20px] md:hidden" onClick={handleClick}>
-        | | |
+        <FiMenu />
       </button>
       {showModel && <Navmodel setmodel={setShowModel} />}
     </nav>

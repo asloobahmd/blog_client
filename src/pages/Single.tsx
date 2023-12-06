@@ -39,6 +39,7 @@ const Single = () => {
   const {
     data: post,
     isLoading,
+    isError,
     refetch,
   } = useQuery<PostType>({
     queryKey: ["singlepost"],
@@ -93,6 +94,10 @@ const Single = () => {
 
   if (isLoading) {
     return <h1 className="container  p-4 flex mx-auto">Loading</h1>;
+  }
+
+  if (isError) {
+    return <h1 className="container  p-4 flex mx-auto">There is an Error</h1>;
   }
 
   const getText = (html: string) => {
