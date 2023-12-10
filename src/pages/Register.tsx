@@ -1,15 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
-import { utillRegForm } from "../utils/regformutils";
 import { regformData } from "../types/types";
+import { registerSchema } from "../utils/validationSchema";
+import useFormHook from "../utils/useFormHook";
 
 const inputStyle =
   "border-[1px] border-stone-400 outline-none p-4 w-full rounded-sm md:p-[12px]";
@@ -18,7 +13,8 @@ const Register = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const { register, handleSubmit, errors } = utillRegForm();
+  const { register, handleSubmit, errors } =
+    useFormHook<regformData>(registerSchema);
 
   const registerMutation = useMutation({
     mutationFn: async (data: regformData) => {

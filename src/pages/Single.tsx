@@ -1,29 +1,14 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import EditModal from "../components/EditModel";
 import Menu from "../components/Menu";
 import { AuthContext } from "../context/authContext";
-import toast, { Toaster } from "react-hot-toast";
-import { MdDelete } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
-
-type PostType = {
-  cat: string;
-  createdAt: string;
-  desc: string;
-  img: string;
-  title: string;
-  uid: {
-    _id: string;
-    username: string;
-    email: string;
-  };
-  updatedAt: string;
-  __v: number;
-  _id: string;
-};
+import { PostType } from "../types/types";
 
 const Single = () => {
   const [showmodel, setshowmodel] = useState<boolean>(false);
@@ -107,7 +92,6 @@ const Single = () => {
 
   return (
     <div className="container p-4 flex mx-auto">
-      <Toaster />
       <div className="w-full md:px-8 flex flex-col gap-6 md:gap-8 lg:w-4/6">
         <div className="flex">
           <img

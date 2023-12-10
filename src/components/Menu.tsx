@@ -1,10 +1,10 @@
 import { FC } from "react";
 import Posts from "./Posts";
 
-type MenuProps = {
+interface MenuProps {
   cat: string;
   postId: string;
-};
+}
 
 const Menu: FC<MenuProps> = ({ cat, postId }) => {
   return (

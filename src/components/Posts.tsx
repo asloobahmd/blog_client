@@ -1,38 +1,14 @@
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { FC, useEffect, useState } from "react";
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { FC } from "react";
+import { ApiResponse } from "../types/types";
 import CatPost from "./CatPost";
 import Post from "./Post";
 
-type PostType = {
-  cat: string;
-  createdAt: string;
-  desc: string;
-  img: string;
-  title: string;
-  uid: {
-    _id: string;
-    username: string;
-    email: string;
-  };
-  updatedAt: string;
-  __v: number;
-  _id: string;
-};
-
-// Define the type for the data returned from the API
-type ApiResponse = PostType[];
-
-type PostsProps = {
+interface PostsProps {
   relcat?: string;
   postId?: string;
-};
+}
 
 const Posts: FC<PostsProps> = ({ relcat, postId }) => {
   const url = relcat

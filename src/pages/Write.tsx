@@ -1,13 +1,13 @@
-import { useState } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import { addPostForm } from "../utils/addpostUtils";
-import { addPostData } from "../types/types";
-import { writePostProps } from "../types/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
+import { addPostData, writePostProps } from "../types/types";
+import useFormHook from "../utils/useFormHook";
+import { createPostSchema } from "../utils/validationSchema";
 
 const Write = () => {
   const [desc, setdesc] = useState<string>("");
@@ -44,6 +44,9 @@ const Write = () => {
   };
 
   const queryClient = useQueryClient();
+
+  const { register, handleSubmit, errors, reset } =
+    useFormHook<addPostData>(createPostSchema);
 
   const addPostMutation = useMutation({
     mutationFn: async (newPost: writePostProps) => {
@@ -97,11 +100,8 @@ const Write = () => {
     reset();
   };
 
-  const { register, handleSubmit, errors, reset } = addPostForm();
-
   return (
     <div className="container flex flex-col md:flex-row p-4 gap-14 mb-16  mx-auto">
-      <Toaster />
       <form
         onSubmit={handleSubmit(submitHandler)}
         className="container flex flex-col md:flex-row p-4 gap-14 mb-16 mx-auto"

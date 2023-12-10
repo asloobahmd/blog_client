@@ -1,31 +1,16 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { FC, useEffect, useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 import ReactQuill from "react-quill";
-import { addPostData, writePostProps } from "../types/types";
-import { addPostForm } from "../utils/addpostUtils";
-import toast, { Toaster } from "react-hot-toast";
+import { addPostData, PostType, writePostProps } from "../types/types";
+import useFormHook from "../utils/useFormHook";
+import { createPostSchema } from "../utils/validationSchema";
 
-type EditModel = {
+interface EditModel {
   setshowmodel: (val: boolean) => void;
   postId: string;
-};
-
-type PostType = {
-  cat: string;
-  createdAt: string;
-  desc: string;
-  img: string;
-  title: string;
-  uid: {
-    _id: string;
-    username: string;
-    email: string;
-  };
-  updatedAt: string;
-  __v: number;
-  _id: string;
-};
+}
 
 const EditModal: FC<EditModel> = ({ setshowmodel, postId }) => {
   const [desc, setDesc] = useState<string>("");
@@ -136,7 +121,8 @@ const EditModal: FC<EditModel> = ({ setshowmodel, postId }) => {
     setCat("");
   };
 
-  const { register, handleSubmit, errors } = addPostForm();
+  const { register, handleSubmit, errors, reset } =
+    useFormHook<addPostData>(createPostSchema);
 
   return (
     <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60">

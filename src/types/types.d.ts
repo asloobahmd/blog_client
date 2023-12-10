@@ -20,3 +20,21 @@ export type writePostProps = {
   img: string;
   cat: string;
 };
+
+export type PostType = {
+  cat: string;
+  createdAt: string;
+  desc: string;
+  img: string;
+  title: string;
+  uid: {
+    _id: string;
+    username: string;
+    email: string;
+  };
+  updatedAt: string;
+  __v: number;
+  _id: string;
+};
+
+export type ApiResponse = PostType[];

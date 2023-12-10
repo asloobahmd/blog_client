@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
 
-type PostProps = {
+interface PostProps {
   post: {
     cat: string;
     createdAt: string;
@@ -17,7 +17,7 @@ type PostProps = {
     __v: number;
     _id: string;
   };
-};
+}
 
 const CatPost: FC<PostProps> = ({ post }) => {
   return (

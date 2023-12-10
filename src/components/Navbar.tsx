@@ -1,12 +1,11 @@
-import axios from "axios";
 import { FC, useContext, useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { FiMenu } from "react-icons/fi";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext, AuthContextProps } from "../context/authContext";
 import Navmodel from "./Navmodel";
-import toast, { Toaster } from "react-hot-toast";
-import { FiMenu } from "react-icons/fi";
 
-type NavbarProps = {};
+interface NavbarProps {}
 
 const Navbar: FC<NavbarProps> = ({}) => {
   const [showModel, setShowModel] = useState<boolean>(false);

@@ -1,9 +1,9 @@
-import React, { FC, useContext } from "react";
+import { FC, useContext } from "react";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
 import { AuthContext } from "../context/authContext";
 
-type PostProps = {
+interface PostProps {
   post: {
     cat: string;
     createdAt: string;
@@ -19,7 +19,7 @@ type PostProps = {
     __v: number;
     _id: string;
   };
-};
+}
 
 const getText = (html: string) => {
   const doc = new DOMParser().parseFromString(html, "text/html");
@@ -38,7 +38,6 @@ const Post: FC<PostProps> = ({ post }) => {
 
   return (
     <div className="items-center mx-auto flex flex-col gap-6 mb-16 md:flex-row md:mb-12 md:gap-4">
-      <Toaster />
       <div className="w-full md:w-1/2  flex justify-center items-center">
         <img
           className="w-[500px] h-[300px] object-cover"

@@ -11,7 +11,7 @@ type userObj = {
 export type AuthContextProps = {
   currentUser: userObj | null;
   setCurrentuser: (user: userObj | null) => void;
-  login: (data: loginformData) => void;
+  login: (userdata: loginformData) => void;
   logout: () => void;
 };
 

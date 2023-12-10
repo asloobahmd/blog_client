@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { utillLoginForm } from "../utils/loginformutils";
-import { loginformData } from "../types/types";
-import { useContext } from "react";
 import { AuthContext, AuthContextProps } from "../context/authContext";
-import axios from "axios";
+import { loginformData } from "../types/types";
+import useFormHook from "../utils/useFormHook";
+import { loginSchema } from "../utils/validationSchema";
 
 const inputStyle =
   "border-[1px] border-stone-400 outline-none p-4 w-full rounded-sm md:p-[12px]";
@@ -16,7 +15,8 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const { register, handleSubmit, errors } = utillLoginForm();
+  const { register, handleSubmit, errors } =
+    useFormHook<loginformData>(loginSchema);
 
   const onsubmit = async (data: loginformData) => {
     try {

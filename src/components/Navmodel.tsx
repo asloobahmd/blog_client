@@ -1,11 +1,11 @@
 import { FC, useContext } from "react";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
 import { AuthContext, AuthContextProps } from "../context/authContext";
 
-type NavmodelProps = {
+interface NavmodelProps {
   setmodel: (showmodel: boolean) => void;
-};
+}
 
 const Navmodel: FC<NavmodelProps> = ({ setmodel }) => {
   const { logout, currentUser } = useContext<AuthContextProps>(AuthContext);

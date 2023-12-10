@@ -1,19 +1,20 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { useContext } from "react";
+import { Toaster } from "react-hot-toast";
 import {
   createBrowserRouter,
-  RouterProvider,
-  Outlet,
   Navigate,
+  Outlet,
+  RouterProvider,
 } from "react-router-dom";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+import { AuthContext } from "./context/authContext";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Single from "./pages/Single";
 import Write from "./pages/Write";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AuthContext } from "./context/authContext";
 
 const App = () => {
   const { currentUser } = useContext(AuthContext);
@@ -24,9 +25,7 @@ const App = () => {
     return (
       <>
         <Navbar />
-
         <Outlet />
-
         <Footer />
       </>
     );
@@ -84,6 +83,7 @@ const App = () => {
 
   return (
     <div className="">
+      <Toaster />
       <QueryClientProvider client={client}>
         <RouterProvider router={router} />
       </QueryClientProvider>
