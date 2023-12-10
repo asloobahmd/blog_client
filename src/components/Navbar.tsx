@@ -27,7 +27,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
   };
 
   const handleClick = () => {
-    setShowModel(true);
+    setShowModel(!showModel);
   };
 
   return (
