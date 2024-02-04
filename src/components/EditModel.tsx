@@ -23,10 +23,10 @@ const EditModal: FC<EditModel> = ({ setshowmodel, postId }) => {
     isLoading,
     isError,
   } = useQuery<PostType>({
-    queryKey: ["singlepost"],
+    queryKey: ["editpost", postId],
     queryFn: async () => {
       const { data } = await axios.get(
-        `https://blogts-node-api.onrender.com/posts/${postId}`,
+        `${import.meta.env.VITE_API_BASE_URL}/posts/${postId}`,
         {
           withCredentials: true,
         }
@@ -48,7 +48,7 @@ const EditModal: FC<EditModel> = ({ setshowmodel, postId }) => {
   const editPostMutation = useMutation({
     mutationFn: async (newPost: writePostProps) => {
       return await axios.put(
-        `https://blogts-node-api.onrender.com/posts/${postId}`,
+        `${import.meta.env.VITE_API_BASE_URL}/posts/${postId}`,
         newPost,
         {
           withCredentials: true,
@@ -57,7 +57,7 @@ const EditModal: FC<EditModel> = ({ setshowmodel, postId }) => {
     },
     onSuccess: () => {
       // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["singlepost"] });
+      queryClient.invalidateQueries({ queryKey: ["singlepost", postId] });
       setDesc("");
       setTitle("");
       setCat("");
@@ -82,7 +82,7 @@ const EditModal: FC<EditModel> = ({ setshowmodel, postId }) => {
   const upload = async (image: string) => {
     try {
       const res = await axios.post(
-        "https://blogts-node-api.onrender.com/imgupload",
+        `${import.meta.env.VITE_API_BASE_URL}/imgupload`,
         {
           image,
         }
@@ -125,17 +125,17 @@ const EditModal: FC<EditModel> = ({ setshowmodel, postId }) => {
     useFormHook<addPostData>(createPostSchema);
 
   return (
-    <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60">
-      <div className="container absolute py-4  bg-white p-4 w-[360px] md:w-[600px] flex flex-col top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:flex-row gap-4  mx-auto">
+    <div className="absolute inset-0 z-50 bg-zinc-900/40 flex items-center justify-center">
+      <div className="relative py-4 bg-white p-4 w-[360px] md:w-[600px] flex flex-col  md:flex-row gap-4  mx-auto rounded-md shadow-lg">
         <button
-          className="absolute top-4 left-4 bg-red-400 text-2xl border-1 p-2"
+          className="absolute top-2 right-5 text-3xl"
           onClick={() => setshowmodel(false)}
         >
-          x
+          X
         </button>
         <form
           onSubmit={handleSubmit(submitHandler)}
-          className="container flex flex-col md:flex-row gap-5 mt-14 mb-4 mx-auto"
+          className="container flex flex-col md:flex-row gap-5 mt-16 mb-4 mx-auto"
         >
           <div className="flex md:px-4 gap-4 flex-col w-full md:w-4/6 ">
             <input
@@ -152,7 +152,7 @@ const EditModal: FC<EditModel> = ({ setshowmodel, postId }) => {
                 theme="snow"
                 onChange={setDesc}
                 value={desc}
-                className=" h-[180px] md:h-[350px]"
+                className=" h-[180px] md:h-[300px]"
               />
             </div>
           </div>

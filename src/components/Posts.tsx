@@ -12,15 +12,19 @@ interface PostsProps {
 
 const Posts: FC<PostsProps> = ({ relcat, postId }) => {
   const url = relcat
-    ? `https://blogts-node-api.onrender.com/posts?cat=${relcat}&postId=${postId}`
-    : "https://blogts-node-api.onrender.com/posts";
+    ? `${
+        import.meta.env.VITE_API_BASE_URL
+      }/posts?cat=${relcat}&postId=${postId}`
+    : `${import.meta.env.VITE_API_BASE_URL}/posts`;
+
+  const queryKey = relcat ? ["posts", relcat, postId] : ["posts"];
 
   const {
     data: posts,
     isLoading,
     isError,
   } = useQuery<ApiResponse>({
-    queryKey: ["posts"],
+    queryKey: queryKey,
     queryFn: async () => {
       const { data } = await axios.get(url, { withCredentials: true });
       return data;
@@ -28,11 +32,15 @@ const Posts: FC<PostsProps> = ({ relcat, postId }) => {
   });
 
   if (isLoading) {
-    return <h1>Loading</h1>;
+    return <h1>Loading...</h1>;
   }
 
   if (isError) {
     return <h1>There is an Error!</h1>;
+  }
+
+  if (posts?.length === 0) {
+    return <h1>No Posts Available</h1>;
   }
 
   const containerClass = relcat ? "" : "pt-6 md:p-6"; // Conditionally set the class

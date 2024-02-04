@@ -8,14 +8,14 @@ type userObj = {
   email: string;
 };
 
-export type AuthContextProps = {
+export type AuthContextType = {
   currentUser: userObj | null;
-  setCurrentuser: (user: userObj | null) => void;
+  setCurrentuser: React.Dispatch<React.SetStateAction<userObj | null>>;
   login: (userdata: loginformData) => void;
   logout: () => void;
 };
 
-export const AuthContext = createContext<AuthContextProps>({
+export const AuthContext = createContext<AuthContextType>({
   currentUser: null,
   setCurrentuser: () => {},
   login: () => {},
@@ -39,7 +39,7 @@ export const AuthContextProvider: FC<{ children: React.ReactNode }> = ({
   const login = async (userdata: loginformData) => {
     try {
       const res = await axios.post(
-        "https://blogts-node-api.onrender.com/auth/login",
+        `${import.meta.env.VITE_API_BASE_URL}/auth/login`,
         userdata,
         {
           withCredentials: true,
@@ -55,7 +55,7 @@ export const AuthContextProvider: FC<{ children: React.ReactNode }> = ({
   const logout = async () => {
     try {
       await axios.post(
-        "https://blogts-node-api.onrender.com/auth/logout",
+        `${import.meta.env.VITE_API_BASE_URL}/auth/logout`,
         {},
         { withCredentials: true }
       );

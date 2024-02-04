@@ -83,10 +83,10 @@ const App = () => {
 
   return (
     <div className="">
-      <Toaster />
       <QueryClientProvider client={client}>
         <RouterProvider router={router} />
       </QueryClientProvider>
+      <Toaster />
     </div>
   );
 };

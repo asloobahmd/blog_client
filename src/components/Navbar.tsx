@@ -31,7 +31,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
   };
 
   return (
-    <nav className="container bg-white  flex items-center justify-between mx-auto p-6 border-b-2">
+    <nav className="container  flex items-center justify-between mx-auto p-6 border-b-2">
       <Link to="/">
         <h1 className="text-3xl">Logo</h1>
       </Link>
@@ -82,7 +82,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
         </ul>
       </div>
       <button className="text-[20px] md:hidden" onClick={handleClick}>
-        <FiMenu />
+        <FiMenu className="text-3xl" />
       </button>
       {showModel && <Navmodel setmodel={setShowModel} />}
     </nav>

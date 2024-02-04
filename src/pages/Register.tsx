@@ -19,7 +19,7 @@ const Register = () => {
   const registerMutation = useMutation({
     mutationFn: async (data: regformData) => {
       return axios.post(
-        "https://blogts-node-api.onrender.com/auth/register",
+        `${import.meta.env.VITE_API_BASE_URL}/auth/register`,
         data,
         {
           withCredentials: true,

@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext, AuthContextProps } from "../context/authContext";
+import { AuthContext, AuthContextType } from "../context/authContext";
 import { loginformData } from "../types/types";
 import useFormHook from "../utils/useFormHook";
 import { loginSchema } from "../utils/validationSchema";
@@ -11,7 +11,7 @@ const inputStyle =
 const Login = () => {
   const [error, setError] = useState<string | null>(null);
 
-  const { login } = useContext<AuthContextProps>(AuthContext);
+  const { login } = useContext<AuthContextType>(AuthContext);
 
   const navigate = useNavigate();
 

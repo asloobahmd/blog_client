@@ -19,18 +19,15 @@ const Single = () => {
 
   const { currentUser } = useContext(AuthContext);
 
-  const queryClient = useQueryClient();
-
   const {
     data: post,
     isLoading,
     isError,
-    refetch,
   } = useQuery<PostType>({
-    queryKey: ["singlepost"],
+    queryKey: ["singlepost", postId],
     queryFn: async () => {
       const { data } = await axios.get(
-        `https://blogts-node-api.onrender.com/posts/${postId}`,
+        `${import.meta.env.VITE_API_BASE_URL}/posts/${postId}`,
         {
           withCredentials: true,
         }
@@ -39,27 +36,16 @@ const Single = () => {
     },
   });
 
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ["singlepost"] });
-    queryClient.invalidateQueries({ queryKey: ["posts"] });
-  });
-
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ["posts"] });
-    refetch();
-  }, [postId]);
-
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
       return await axios.delete(
-        `https://blogts-node-api.onrender.com/posts/${id}`,
+        `${import.meta.env.VITE_API_BASE_URL}/posts/${id}`,
         {
           withCredentials: true,
         }
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
       toast.success("Successfully Deleted!");
     },
   });
@@ -68,7 +54,6 @@ const Single = () => {
     try {
       await deleteMutation.mutateAsync(id);
 
-      // delay becase toast message showing
       setTimeout(() => {
         navigate("/");
       }, 1000);

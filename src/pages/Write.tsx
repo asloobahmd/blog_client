@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -32,7 +32,7 @@ const Write = () => {
   const upload = async (image: string) => {
     try {
       const res = await axios.post(
-        "https://blogts-node-api.onrender.com/imgupload",
+        `${import.meta.env.VITE_API_BASE_URL}/imgupload`,
         {
           image,
         }
@@ -43,15 +43,13 @@ const Write = () => {
     }
   };
 
-  const queryClient = useQueryClient();
-
   const { register, handleSubmit, errors, reset } =
     useFormHook<addPostData>(createPostSchema);
 
   const addPostMutation = useMutation({
     mutationFn: async (newPost: writePostProps) => {
       return await axios.post(
-        "https://blogts-node-api.onrender.com/posts",
+        `${import.meta.env.VITE_API_BASE_URL}/posts`,
         newPost,
         {
           withCredentials: true,
@@ -59,11 +57,7 @@ const Write = () => {
       );
     },
     onSuccess: () => {
-      // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
-      toast.success("Successfully Posted!", {
-        id: "write-toast", // Unique id for this toast
-      });
+      toast.success("Successfully Posted!");
     },
   });
 
