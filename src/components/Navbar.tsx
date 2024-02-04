@@ -2,7 +2,7 @@ import { FC, useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { FiMenu } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext, AuthContextProps } from "../context/authContext";
+import { AuthContext, AuthContextType } from "../context/authContext";
 import Navmodel from "./Navmodel";
 
 interface NavbarProps {}
@@ -12,7 +12,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
 
   const navigate = useNavigate();
 
-  const { logout, currentUser } = useContext<AuthContextProps>(AuthContext);
+  const { logout, currentUser } = useContext<AuthContextType>(AuthContext);
 
   const handleLogout = async () => {
     try {
