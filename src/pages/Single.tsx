@@ -81,7 +81,7 @@ const Single = () => {
         <div className="flex">
           <img
             src={post?.img}
-            className="w-[800px] h-[500px] object-cover"
+            className="w-[800px] h-[300px] md:h-[500px] object-cover"
             alt=""
           />
         </div>
